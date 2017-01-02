@@ -94,7 +94,7 @@ class Polynomial:
         # and the dividend itself, respectively
         quotient = Polynomial((0,))
         remainder = Polynomial(self.coefs)
-        while len(remainder.coefs) >= len(other_polynomial.coefs):
+        while len(remainder.coefs) >= len(other_polynomial.coefs) and remainder.coefs != (0,):
             temp = Polynomial((0,) * (len(remainder.coefs) - len(other_polynomial.coefs))
                               + (remainder.coefs[-1] / other_polynomial.coefs[-1],))
             quotient += temp

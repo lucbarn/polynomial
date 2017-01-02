@@ -16,6 +16,20 @@ def test():
     assert (x**2 - 1) == (x - 1) * (x + 1)
     assert x.derivative().integral() == x.integral().derivative() == x
 
+    den1 = x**2 + 2*x + 3
+    q1 = 2*x
+    r1 = x + 5
+    num1 = den1 * q1 + r1
+    div1 = num1 / den1
+    assert num1 == den1 * div1.quotient + div1.remainder
+
+    den1 = 9 * x**4 + 6 * x**3 + 2 * x**2 + 4 * x
+    q1 = 2 * x**2 + 2 * x + 5
+    r1 = x**2 + 4
+    num1 = den1 * q1 + r1
+    div1 = num1 / den1
+    assert num1 == den1 * div1.quotient + div1.remainder
+
     def binomial_expansion(a,b,n):
 
         def pascals_triangle(m):
