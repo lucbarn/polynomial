@@ -7,6 +7,7 @@ class Polynomial:
     '''
 
     def __init__(self, coefs):
+        assert len(coefs) > 0
         # The unnecessary zeros to the right of the rightmost non-zero coefficient
         # are deleted, unless the Polynomial object is the zero polynomial.
         i = len(coefs) - 1
@@ -73,14 +74,9 @@ class Polynomial:
     def __mul__(self, other):
         assert type(other) in [int, float, Polynomial]
         other_polynomial = Polynomial((other,)) if type(other) in [int, float] else other
-        def inner_function(c,m,i):
-            t = ()
-            for j in range(len(c)):
-                t += (c[j] * m,)
-            return (0,)*i + t
-        output = Polynomial(inner_function(self.coefs, other_polynomial.coefs[0], 0))
-        for i in range(1,len(other_polynomial.coefs)):
-            output += Polynomial(inner_function(self.coefs, other_polynomial.coefs[i], i))
+        output = Polynomial((0,))
+        for i in range(len(other_polynomial.coefs)):
+            output += Polynomial((0,)*i + sum(((c * other_polynomial.coefs[i],) for c in self.coefs), ()))
         return output
 
     def __rmul__(self, other):
@@ -116,10 +112,9 @@ class Polynomial:
     def derivative(self, n=1):
         '''Return the nth derivative of the polynomial.'''
         assert n >= 0 and type(n) == int
-        p = Polynomial(self.coefs)
-        for i in range(n):
-            p = Polynomial(tuple(p.coefs[i] * i for i in range(1,len(p.coefs))))
-        return p
+        from numpy import prod
+        coefficients = tuple(self.coefs[i] * prod(range(i-n+1,i+1)) for i in range(n,len(self.coefs)))
+        return Polynomial(coefficients or (0,))
 
     def integral(self, c=0):
         '''Return the primitive integral of the polynomial. The constant factor is equal to c.'''
