@@ -1,4 +1,4 @@
-# Python 3.4.2
+# Python 3
 
 # Test cases for polynomial.py
 
@@ -6,7 +6,7 @@ from polynomial import Polynomial
 
 def test():
 
-    x = Polynomial((0,1))
+    x = Polynomial([(1,1)])
 
     assert x**0 == 1
     assert x**1 == 0 + x == x + 0 == x
