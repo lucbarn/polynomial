@@ -2,8 +2,12 @@
 
 class Polynomial:
     def __init__(self, terms):
-        assert type(terms) == list and all(type(t) == tuple and len(t) == 2 for t in terms)
-        assert all(type(t[0]) in (int, float) and type(t[1]) == int for t in terms)
+        if type(terms) != list or any(type(t) != tuple or len(t) != 2 for t in terms):
+            raise Exception('the terms must be a list of two-element tuples')
+        if any(type(c) not in (int, float) for c, exp in terms):
+            raise TypeError('every coefficient must be an integer or a float')
+        if any(type(exp) != int for c, exp in terms):
+            raise TypeError('every exponent must be an integer')
         self.terms = [t for t in sorted(terms, key = lambda x: x[1]) if t[0] != 0]
         self.degree = -1 if len(self.terms) == 0 else self.terms[-1][1]
     
@@ -11,6 +15,8 @@ class Polynomial:
         '''Substitute k to the indeterminate x and return the value of the
         resulting expression.
         '''
+        if type(k) not in (int, float):
+            raise TypeError('can only substitute an integer or a float to the indeterminate x')
         return sum((c*k**exp for c, exp in self.terms))
     
     def __repr__(self):
@@ -43,7 +49,8 @@ class Polynomial:
             return False
     
     def __add__(self, other):
-        assert type(other) in (int, float, Polynomial)
+        if type(other) not in (int, float, Polynomial):
+            raise TypeError('%s object cannot be interpreted as a Polynomial' % type(other).__name__)
         other_polynomial = other if type(other) == Polynomial else Polynomial([(other, 0)])
         result = []
         i, j = 0, 0
@@ -67,7 +74,8 @@ class Polynomial:
         return self + other
     
     def __sub__(self, other):
-        assert type(other) in (int, float, Polynomial)
+        if type(other) not in (int, float, Polynomial):
+            raise TypeError('%s object cannot be interpreted as a Polynomial' % type(other).__name__)
         other_polynomial = other if type(other) == Polynomial else Polynomial([(other, 0)])
         return -1*other + self
     
@@ -75,7 +83,8 @@ class Polynomial:
         return -1*self + other
     
     def __mul__(self, other):
-        assert type(other) in (int, float, Polynomial)
+        if type(other) not in (int, float, Polynomial):
+            raise TypeError('%s object cannot be interpreted as a Polynomial' % type(other).__name__)
         other_polynomial = other if type(other) == Polynomial else Polynomial([(other, 0)])
         return sum((Polynomial([(c1 * c2, exp1 + exp2) for c1, exp1 in self.terms])
                    for c2, exp2 in other_polynomial.terms), Polynomial([]))
@@ -85,10 +94,13 @@ class Polynomial:
     
     def __truediv__(self, other):
         from collections import namedtuple
-        assert type(other) in (int, float, Polynomial)
+        if type(other) not in (int, float, Polynomial):
+            raise TypeError('%s object cannot be interpreted as a Polynomial' % type(other).__name__)
         other_polynomial = other if type(other) == Polynomial else Polynomial([(other, 0)])
-        assert self.degree >= other_polynomial.degree
-        assert other_polynomial.degree > -1
+        if self.degree < other_polynomial.degree:
+            raise Exception('cannot divide a Polynomial by another of higher degree')
+        if other_polynomial.degree == -1:
+            raise ZeroDivisionError('cannot divide a Polynomial by the zero polynomial')
         # The quotient and the remainder are initialized as the zero polynomial
         # and the dividend itself, respectively
         quotient = Polynomial([])
@@ -106,13 +118,19 @@ class Polynomial:
     
     def __pow__(self, n):
         import functools
-        assert type(n) == int and n >= 0
+        if type(n) != int:
+            raise TypeError('the exponent must be an integer')
+        if n < 0:
+            raise ValueError('the exponent must be greater than or equal to zero')
         return functools.reduce(lambda x,y: x*y , (Polynomial(self.terms) for i in range(n)), 1)
     
     def derivative(self, n=1):
         '''Return the nth derivative of the polynomial.'''
         import functools
-        assert type(n) == int and n >= 0
+        if type(n) != int:
+            raise TypeError('the order of the derivative must be an integer')
+        if n < 0:
+            raise ValueError('the order of the derivative must be greater than or equal to zero')
         result = []
         for c, exp in self.terms:
             result.append((functools.reduce(lambda x,y: x*y, range(exp-n+1,exp+1), c), max(exp-n, 0)))
@@ -120,6 +138,7 @@ class Polynomial:
     
     def integral(self, c=0):
         '''Return the primitive integral of the polynomial. The constant factor is equal to c.'''
-        assert type(c) in (int, float)
+        if type(c) not in (int, float):
+            raise TypeError('the constant factor must be an integer or a float')
         result = [(c,0)] + [(c / (exp+1), exp+1) for c, exp in self.terms]
         return Polynomial(result)
