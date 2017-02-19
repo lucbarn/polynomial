@@ -9,6 +9,9 @@ class Polynomial:
         if any(type(exp) != int for c, exp in terms):
             raise TypeError('every exponent must be an integer')
         self.terms = [t for t in sorted(terms, key = lambda x: x[1]) if t[0] != 0]
+        for (c1, exp1), (c2, exp2) in zip(self.terms, self.terms[1:]):
+            if exp1 == exp2:
+                raise Exception('duplicate term of degree %s' % exp1)
         self.degree = -1 if len(self.terms) == 0 else self.terms[-1][1]
     
     def evaluate(self, k):
