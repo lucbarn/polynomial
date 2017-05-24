@@ -12,7 +12,9 @@ class Polynomial:
         for (c1, exp1), (c2, exp2) in zip(self.terms, self.terms[1:]):
             if exp1 == exp2:
                 raise Exception('duplicate term of degree %s' % exp1)
-        self.degree = -1 if len(self.terms) == 0 else self.terms[-1][1]
+    
+    def degree(self):
+        return -1 if len(self.terms) == 0 else self.terms[-1][1]
     
     def evaluate(self, k):
         '''Substitute k to the indeterminate x and return the value of the
@@ -26,7 +28,7 @@ class Polynomial:
         return 'Polynomial({terms})'.format(terms = self.terms)
     
     def __str__(self):
-        if self.degree == -1:
+        if self.degree() == -1:
             return '0'
         else:
             s = ''
@@ -41,7 +43,7 @@ class Polynomial:
     
     def __bool__(self):
         # return False if the Polynomial object is the zero polynomial, else True.
-        return self.degree != -1
+        return self.degree() != -1
     
     def __eq__(self, other):
         if type(other) == Polynomial:
@@ -100,15 +102,15 @@ class Polynomial:
         if type(other) not in (int, float, Polynomial):
             raise TypeError('%s object cannot be interpreted as a Polynomial' % type(other).__name__)
         other_polynomial = other if type(other) == Polynomial else Polynomial([(other, 0)])
-        if self.degree < other_polynomial.degree:
+        if self.degree() < other_polynomial.degree():
             raise Exception('cannot divide a Polynomial by another of higher degree')
-        if other_polynomial.degree == -1:
+        if other_polynomial.degree() == -1:
             raise ZeroDivisionError('cannot divide a Polynomial by the zero polynomial')
         # The quotient and the remainder are initialized as the zero polynomial
         # and the dividend itself, respectively
         quotient = Polynomial([])
         remainder = Polynomial(self.terms)
-        while remainder.degree >= other_polynomial.degree:
+        while remainder.degree() >= other_polynomial.degree():
             c = remainder.terms[-1][0] / other_polynomial.terms[-1][0]
             exp = remainder.terms[-1][1] - other_polynomial.terms[-1][1]
             temp = Polynomial([(c, exp)])
