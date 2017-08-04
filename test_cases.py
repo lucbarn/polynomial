@@ -1,5 +1,3 @@
-# Python 3
-
 # Test cases for polynomial.py
 
 from polynomial import Polynomial
@@ -33,11 +31,13 @@ def test():
     def binomial_expansion(a,b,n):
 
         def pascals_triangle(m):
-            levels = [[1], [1,1]]
-            for i in range(2,m+1):
-                temp = [levels[-1][j-1] + levels[-1][j] for j in range(1,len(levels[-1]))]
-                levels.append([1] + temp + [1])
-            return levels[m]
+            current_row = [1]
+            for i in range(1,m+1):
+                new_row = []
+                for j in range(1,len(current_row)):
+                    new_row.append(current_row[j-1] + current_row[j])
+                current_row = [1] + new_row + [1]
+            return current_row
 
         coefficients = pascals_triangle(n)
 
