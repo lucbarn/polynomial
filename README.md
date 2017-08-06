@@ -9,3 +9,5 @@ So, for example, the polynomial x**2 + 3*x + 1 is initialized as
 Polynomial([(1,0), (3,1), (1,2)]).
 
 `test_cases.py` contains some test cases.
+
+`utils.py` contains two functions that are used in `test_cases.py`.
