@@ -1,5 +1,6 @@
 from polynomial import Polynomial
 from utils import pascals_triangle, binomial_expansion
+from random import randint
 
 def test():
 
@@ -30,6 +31,13 @@ def test():
     num1 = den1 * q1 + r1
     div1 = num1 / den1
     assert num1 == den1 * div1.quotient + div1.remainder
+
+    # test cases for polynomial degree
+
+    p = Polynomial([])
+    for n in range(100):
+        p += randint(1,10) * x**n
+        assert p.degree() == n
 
 
 if __name__ == '__main__':
