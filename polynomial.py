@@ -1,3 +1,6 @@
+import functools
+from collections import namedtuple
+
 class Polynomial:
     def __init__(self, terms):
         if type(terms) != list or any(type(t) != tuple or len(t) != 2 for t in terms):
@@ -96,7 +99,6 @@ class Polynomial:
         return self * other
 
     def __truediv__(self, other):
-        from collections import namedtuple
         if type(other) not in (int, float, Polynomial):
             raise TypeError('%s object cannot be interpreted as a Polynomial' % type(other).__name__)
         other_polynomial = other if type(other) == Polynomial else Polynomial([(other, 0)])
@@ -120,7 +122,6 @@ class Polynomial:
         return Polynomial_division(quotient = quotient, remainder = remainder)
 
     def __pow__(self, n):
-        import functools
         if type(n) != int:
             raise TypeError('the exponent must be an integer')
         if n < 0:
@@ -129,7 +130,6 @@ class Polynomial:
 
     def derivative(self, n=1):
         '''Return the nth derivative of the polynomial.'''
-        import functools
         if type(n) != int:
             raise TypeError('the order of the derivative must be an integer')
         if n < 0:
