@@ -35,6 +35,12 @@ class TestPascalsTriangle(unittest.TestCase):
                 'every row of the triangle should be symmetrical'
             )
 
+    def test_wrong_type(self):
+        self.assertRaises(Exception, pascals_triangle, '3')
+
+    def test_negative_integer(self):
+        self.assertRaises(Exception, pascals_triangle, -2)
+
 class TestBinomialExpansion(unittest.TestCase):
 
     def test_power_zero(self):
@@ -50,6 +56,12 @@ class TestBinomialExpansion(unittest.TestCase):
             -2+4,
             'a binomial raised to the power of 1 should be equal to itself'
         )
+
+    def test_wrong_type(self):
+        self.assertRaises(Exception, binomial_expansion, '10')
+
+    def test_negative_integer(self):
+        self.assertRaises(Exception, binomial_expansion, -1)
 
 if __name__ == '__main__':
     unittest.main()
