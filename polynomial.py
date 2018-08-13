@@ -17,7 +17,7 @@ class Polynomial:
     def degree(self):
         return -1 if len(self.terms) == 0 else self.terms[-1][1]
 
-    def evaluate(self, k):
+    def __call__(self, k):
         '''Substitute k to the indeterminate x and return the value of the
         resulting expression.
         '''
