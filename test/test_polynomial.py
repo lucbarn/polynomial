@@ -1,6 +1,6 @@
 import unittest
-from polynomial import Polynomial
-from utils import pascals_triangle, binomial_expansion
+from src.polynomial import Polynomial
+from test.utils import pascals_triangle, binomial_expansion
 from random import randint
 
 

@@ -1,5 +1,5 @@
 import unittest
-from utils import pascals_triangle, binomial_expansion
+from test.utils import pascals_triangle, binomial_expansion
 
 class TestPascalsTriangle(unittest.TestCase):
 
