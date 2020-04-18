@@ -6,16 +6,12 @@ multiplication, differentiation and integration.
 The terms of the polynomial are represented by a list of tuples. Each tuple consists of
 two elements: the coefficient, the first element, and the exponent, the second element.
 
-`test_cases.py` contains some test cases.
-
-`utils.py` contains two functions that are used in `test_cases.py`.
-
 ## Usage
 
 Import the class Polynomial from polynomial.py:
 
 ```Python
-from polynomial import Polynomial
+from src.polynomial import Polynomial
 ```
 
 Create a polynomial, for example x<sup>2</sup> + 3x + 1:
@@ -29,4 +25,26 @@ or equivalently:
 ```Python
 x = Polynomial([1,1])
 p = x**2 + 3*x + 1
+```
+
+## Euler's prime-generating polynomial example
+
+The follwing polynomial gives distinct primes for integers n such that 0 <= n <= 39:
+
+```Python
+x = Polynomial([(1,1)])
+p = x**2 + x + 41
+
+is_prime = lambda k: type(k) == int and k > 1 and not any(k%n == 0 for n in range(2,k))
+
+# test should be equal to true
+test = all(is_prime(p(k)) for k in range(40))
+```
+
+## Tests
+
+Unit tests can be run from `polynomial` folder with the following command:
+
+```bash
+python3 -m unittest discover -v
 ```
