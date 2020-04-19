@@ -1,14 +1,15 @@
 ## Description
 
-`polynomial.py` contains the definition of a class that can be used to create
-polynomials. Some of the operations that can be performed are addition, subtraction,
-multiplication, differentiation and integration.
-The terms of the polynomial are represented by a list of tuples. Each tuple consists of
-two elements: the coefficient, the first element, and the exponent, the second element.
+`Polynomial` is a class used to create a polynomial from a list of tuples, which represents
+the terms of the polynomial. Each tuple consists of two elements: the coefficient,
+the first element, and the exponent, the second element.
+
+The operations that can be performed are addition, subtraction, multiplication,
+differentiation and integration.
 
 ## Usage
 
-Import the class Polynomial from polynomial.py:
+Import the class Polynomial from `src/polynomial.py`:
 
 ```Python
 from src.polynomial import Polynomial
@@ -29,7 +30,7 @@ p = x**2 + 3*x + 1
 
 ## Euler's prime-generating polynomial example
 
-The follwing polynomial gives distinct primes for integers n such that 0 <= n <= 39:
+As an example, the following polynomial gives distinct primes for integers n such that 0 <= n <= 39:
 
 ```Python
 x = Polynomial([(1,1)])
@@ -43,7 +44,7 @@ test = all(is_prime(p(k)) for k in range(40))
 
 ## Tests
 
-Unit tests can be run from `polynomial` folder with the following command:
+Unit tests can be run with the following command:
 
 ```bash
 python3 -m unittest discover -v
